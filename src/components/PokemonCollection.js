@@ -3,12 +3,41 @@ import PokemonCard from './PokemonCard'
 import { Card } from 'semantic-ui-react'
 
 class PokemonCollection extends React.Component {
+
+  returnHP = pokemon => {
+    let stat = pokemon.stats.find(stat => stat["name"] === "hp")
+    return stat.value
+  }
   
   renderPokemonCards = () => {
-    if (this.props.search === "") {
-    return this.props.pokemon.map(pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} />)
+    const {search, sortBy, pokemon, clearSortBy} = this.props
+
+    if (sortBy === "name") {
+      clearSortBy() // clears state for sortBy to allow for search while pokemon sorted
+      return (
+        pokemon.sort((a, b) =>  a.name > b.name ? 1 : -1).map(pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} returnHP={this.returnHP}/>)
+      )
+    } else if (sortBy === "id") {
+      clearSortBy()
+      return (
+        pokemon.sort((a, b) =>  a.id > b.id ? 1 : -1).map(pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} returnHP={this.returnHP}/>)
+      )
+    } else if (sortBy === "hp") {
+      clearSortBy()
+      return (
+        pokemon.sort((a, b) =>  this.returnHP(a) > this.returnHP(b) ? 1 : -1).map(pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} 
+          returnHP={this.returnHP}/>)
+      )
+    } else if (search === "") {
+      return (
+        pokemon.map(pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon}
+          returnHP={this.returnHP}/>)
+      )
     } else {
-      return this.props.pokemon.filter(pokemon => pokemon.name.includes(this.props.search)).map(pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} />)
+      return (
+        pokemon.filter(pokemon => pokemon.name.includes(search)).map(pokemon => <PokemonCard key={pokemon.id} pokemon={pokemon} 
+          returnHP={this.returnHP}/>)
+      )
     }
   }
 

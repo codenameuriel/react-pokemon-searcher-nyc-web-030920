@@ -10,7 +10,8 @@ class PokemonPage extends React.Component {
 
   state = {
     pokemon: [],
-    search: ""
+    search: "",
+    sortBy: ""
   }
 
   fetchPokemon = () => {
@@ -31,17 +32,29 @@ class PokemonPage extends React.Component {
     })
   }
 
+  handleSort = event => {
+    this.setState({
+      sortBy: event.target.value
+    })
+  }
+
+  // clears state for sortBy to allow for search while pokemon sorted
+  clearSortBy = () => {
+    this.setState({
+      sortBy: ""
+    })
+  }
 
   render() {
     return (
       <Container>
         <h1>Pokemon Searcher</h1>
         <br />
-        <PokemonForm api={API}/>
+        <PokemonForm fetchPokemon={this.fetchPokemon}/>
         <br />
-        <Search handleSearch={this.handleSearch} search={this.state.search}/>
+        <Search handleSearch={this.handleSearch} search={this.state.search} handleSort={this.handleSort}/>
         <br />
-        <PokemonCollection pokemon={this.state.pokemon} search={this.state.search}/>
+        <PokemonCollection pokemon={this.state.pokemon} search={this.state.search} sortBy={this.state.sortBy} clearSortBy={this.clearSortBy}/>
       </Container>
     )
   }

@@ -7,10 +7,10 @@ class PokemonCard extends React.Component {
     image: 'front'
   }
 
-  returnHP = pokemon => {
-    let stat = pokemon.stats.find(stat => stat["name"] === "hp")
-    return stat.value
-  }
+  // returnHP = pokemon => {
+  //   let stat = pokemon.stats.find(stat => stat["name"] === "hp")
+  //   return stat.value
+  // }
 
   handleClick = () => {
     if (this.state.image === "front") {
@@ -26,8 +26,8 @@ class PokemonCard extends React.Component {
 
   render() {
     const {name} = this.props.pokemon
-    const {pokemon} = this.props
-    const hp = this.returnHP(pokemon)
+    const {pokemon, returnHP} = this.props
+    const hp = returnHP(pokemon)
 
     return (
       <Card>

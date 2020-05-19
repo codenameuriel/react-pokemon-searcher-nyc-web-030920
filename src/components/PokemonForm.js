@@ -20,8 +20,8 @@ class PokemonForm extends React.Component {
   }
 
   handleSubmit = () => {
-    // send post request
-    // const {api} = this.props.api
+
+    const {name, hp, frontUrl, backUrl} = this.state
 
     fetch('http://localhost:3000/pokemon', {
       method: 'POST',
@@ -29,10 +29,10 @@ class PokemonForm extends React.Component {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify({id: 1, ...this.state})
+      body: JSON.stringify({"id": 1, name, "stats": [{"value": parseInt(hp, 10), "name": "hp"}], sprites: {"front": frontUrl, "back": backUrl }})
     })
     .then(resp => resp.json())
-    .then(console.log)
+    .then(this.props.fetchPokemon)
   }
 
   render() {
